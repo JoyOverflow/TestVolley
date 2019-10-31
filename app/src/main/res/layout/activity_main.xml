@@ -45,9 +45,10 @@
                 android:layout_margin="10dp"
                 android:text="Post Request" />
             <TextView
-                android:id="@+id/showMsg"
+                android:id="@+id/txt_message"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:singleLine="false"
                 android:layout_margin="10dp" />
             <ImageView
                 android:id="@+id/showImage"
