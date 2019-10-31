@@ -4,6 +4,7 @@ import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.View;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -21,10 +22,7 @@ import org.json.JSONObject;
 import ouyj.hyena.com.testvolley.model.Result;
 import ouyj.hyena.com.testvolley.model.Weathers;
 
-public class MainActivity extends AppCompatActivity {
-
-    //https://blog.csdn.net/weixin_36709064/article/details/81563184
-    //https://github.com/cmyeyi/NetFramework
+public class MainActivity extends AppCompatActivity implements View.OnClickListener{
     private static final String TAG = MainActivity.class.getSimpleName();
 
     @Override
@@ -32,19 +30,23 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        //getJsonString();
-        //getJsonObject();
-        getNetImageView();
+        //getWebString();
+        //getWebObject();
+        //getNetImageView();
     }
+
+
+
+
+
 
 
     /**
      * 获取Json字串数据
      */
-    private void getJsonString() {
+    private void getWebString() {
         String url = "http://api.k780.com/?app=weather.history&weaid=1&date=2019-10-30&appkey=10003&sign=b59bc3ef6191eb9f747dd4e83c99f2a4&format=json";
-        RequestQueue queue = Volley.newRequestQueue(getApplicationContext());
-        StringRequest stringRequest = new StringRequest(
+        StringRequest request = new StringRequest(
                 Request.Method.GET,
                 url,
                 new Response.Listener<String>() {
@@ -63,26 +65,27 @@ public class MainActivity extends AppCompatActivity {
                 }
         );
         //加入到请求队列中
-        queue.add(stringRequest);
+        request.setTag("stringRequest");
+        RequestQueue queue = Volley.newRequestQueue(getApplicationContext());
+        queue.add(request);
     }
 
     /**
      * 从返回的Json串获取到Java对象
      */
-    private void getJsonObject() {
+    private void getWebObject() {
+
         String url = "http://api.k780.com/?app=weather.history&weaid=1&date=2019-10-30&appkey=10003&sign=b59bc3ef6191eb9f747dd4e83c99f2a4&format=json";
-        RequestQueue queue = Volley.newRequestQueue(getApplicationContext());
         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(
                 url,
                 null,
                 new Response.Listener<JSONObject>() {
                     @Override
                     public void onResponse(JSONObject response) {
-
                         //将Json字串反序列为指定对象
                         Weathers weatherList = new Gson().fromJson(response.toString(), Weathers.class);
-
                         if(weatherList != null) {
+                            //显示对象信息
                             for(Result r : weatherList.getResult()) {
                                 Log.d(TAG, "city:"+r.getCitynm() + "weather:"+ r.getWeather() +"\n");
                             }
@@ -94,6 +97,8 @@ public class MainActivity extends AppCompatActivity {
                     public void onErrorResponse(VolleyError error) { }
                 }
         );
+        //入到请求队列中
+        RequestQueue queue = Volley.newRequestQueue(getApplicationContext());
         queue.add(jsonObjectRequest);
     }
 
@@ -177,5 +182,10 @@ public class MainActivity extends AppCompatActivity {
         //开始显示图像
         String url = "https://img14.360buyimg.com/n0/jfs/t9334/49/109195984/39953/e791fc17/59a0f2e3N90587133.jpg";
         imgView.setImageUrl(url,imgLoader);
+    }
+
+    @Override
+    public void onClick(View v) {
+
     }
 }
