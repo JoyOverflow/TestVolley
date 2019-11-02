@@ -229,7 +229,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         //图像Url
         String url = "https://img14.360buyimg.com/n0/jfs/t9334/49/109195984/39953/e791fc17/59a0f2e3N90587133.jpg";
 
-        //创建图像加载器（获取网络图片后，传递给内存缓存类）
+        //创建图像加载器（获取网络图片后，先传递给内存缓存类）
         int cacheSize=LruBitmapCache.getCacheSize(getApplicationContext());
         ImageLoader imgLoader = new ImageLoader(
                 queue,
@@ -303,25 +303,4 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         };
         queue.add(postRequest);
     }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 }
